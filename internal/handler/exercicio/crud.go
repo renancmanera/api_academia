@@ -8,7 +8,6 @@ import (
 	"github.com/renancmanera/api_academia/internal/repository"
 )
 
-// Lisar exercícios
 func ListarExercicios(c *gin.Context) {
 	var exercicios []domain.Exercicio
 	if err := repository.DB.Find(&exercicios).Error; err != nil {
@@ -18,7 +17,6 @@ func ListarExercicios(c *gin.Context) {
 	c.JSON(http.StatusOK, exercicios)
 }
 
-// Buscar exercício por ID
 func BuscarExercicioPorID(c *gin.Context) {
 	id := c.Param("id")
 	var exercicio domain.Exercicio
@@ -29,7 +27,6 @@ func BuscarExercicioPorID(c *gin.Context) {
 	c.JSON(http.StatusOK, exercicio)
 }
 
-// Atualizar exercício
 func AtualizarExercicio(c *gin.Context) {
 	id := c.Param("id")
 	var exercicio domain.Exercicio
@@ -52,7 +49,6 @@ func AtualizarExercicio(c *gin.Context) {
 	c.JSON(http.StatusOK, exercicio)
 }
 
-// Deletar exercício
 func DeletarExercicio(c *gin.Context) {
 	id := c.Param("id")
 	if err := repository.DB.Delete(&domain.Exercicio{}, id).Error; err != nil {

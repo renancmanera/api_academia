@@ -8,7 +8,6 @@ import (
 	"github.com/renancmanera/api_academia/internal/repository"
 )
 
-// Estrutura para receber o JSON de cadastro
 type CadastroUsuarioInput struct {
 	Nome  string `json:"nome" binding:"required"`
 	Email string `json:"email" binding:"required,email"`

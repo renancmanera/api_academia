@@ -8,7 +8,6 @@ import (
 	"github.com/renancmanera/api_academia/internal/repository"
 )
 
-// Buscar treino por ID
 func BuscarTreinoPorID(c *gin.Context) {
 	id := c.Param("id")
 	var treino domain.Treino
@@ -19,7 +18,6 @@ func BuscarTreinoPorID(c *gin.Context) {
 	c.JSON(http.StatusOK, treino)
 }
 
-// Atualizar treino
 func AtualizarTreino(c *gin.Context) {
 	id := c.Param("id")
 	var treino domain.Treino
@@ -41,7 +39,6 @@ func AtualizarTreino(c *gin.Context) {
 	c.JSON(http.StatusOK, treino)
 }
 
-// Deletar treino
 func DeletarTreino(c *gin.Context) {
 	id := c.Param("id")
 	if err := repository.DB.Delete(&domain.Treino{}, id).Error; err != nil {

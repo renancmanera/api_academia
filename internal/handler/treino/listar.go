@@ -8,7 +8,6 @@ import (
 	"github.com/renancmanera/api_academia/internal/repository"
 )
 
-// Handler para listar os treinos do usuário autenticado
 func ListarTreinos(c *gin.Context) {
 	usuarioID, existe := c.Get("usuario_id")
 	if !existe {

@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-	gin.SetMode(gin.ReleaseMode) // Configura o Gin para o modo de produção
+	gin.SetMode(gin.ReleaseMode)
 	repository.InitDB()
 	handler.RunServer()
 }

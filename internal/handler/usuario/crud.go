@@ -8,7 +8,6 @@ import (
 	"github.com/renancmanera/api_academia/internal/repository"
 )
 
-// Listar todos os usuários
 func ListarUsuarios(c *gin.Context) {
 	var usuarios []domain.Usuario
 	if err := repository.DB.Find(&usuarios).Error; err != nil {
@@ -18,7 +17,6 @@ func ListarUsuarios(c *gin.Context) {
 	c.JSON(http.StatusOK, usuarios)
 }
 
-// Buscar usuário por ID
 func BuscarUsuarioPorID(c *gin.Context) {
 	id := c.Param("id")
 	var usuario domain.Usuario
@@ -29,7 +27,6 @@ func BuscarUsuarioPorID(c *gin.Context) {
 	c.JSON(http.StatusOK, usuario)
 }
 
-// Atualizar usuário
 func AtualizarUsuario(c *gin.Context) {
 	id := c.Param("id")
 	var usuario domain.Usuario
@@ -52,7 +49,6 @@ func AtualizarUsuario(c *gin.Context) {
 	c.JSON(http.StatusOK, usuario)
 }
 
-// Deletar usuário
 func DeletarUsuario(c *gin.Context) {
 	id := c.Param("id")
 	if err := repository.DB.Delete(&domain.Usuario{}, id).Error; err != nil {
