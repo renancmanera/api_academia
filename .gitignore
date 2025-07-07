@@ -1,0 +1,21 @@
+# Binaries
+bin/
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Go modules
+vendor/
+
+# Env files
+.env
+
+# IDEs
+.idea/
+.vscode/
+*.swp
+
+# Docs
+docs/swagger/
