@@ -27,20 +27,31 @@ func SetupRouter() *gin.Engine {
 		c.JSON(200, gin.H{"mensagem": "Você acessou uma rota protegida!"})
 	})
 
-	// Rota de cadastro de usuário
+	// Rotas de autenticação
 	r.POST("/cadastro", usuario.CadastrarUsuario)
 	r.POST("/login", usuario.LoginUsuario)
 
-	// Rotas de Treino
+	// CRUD de Usuário
+	r.GET("/usuarios", middleware.AutenticarJWT(), usuario.ListarUsuarios)
+	r.GET("/usuarios/:id", middleware.AutenticarJWT(), usuario.BuscarUsuarioPorID)
+	r.PUT("/usuarios/:id", middleware.AutenticarJWT(), usuario.AtualizarUsuario)
+	r.DELETE("/usuarios/:id", middleware.AutenticarJWT(), usuario.DeletarUsuario)
+
+	// CRUD de Treino
 	r.POST("/treinos", middleware.AutenticarJWT(), treino.CadastrarTreino)
 	r.GET("/treinos", middleware.AutenticarJWT(), treino.ListarTreinos)
+	r.GET("/treinos/:id", middleware.AutenticarJWT(), treino.BuscarTreinoPorID)
+	r.PUT("/treinos/:id", middleware.AutenticarJWT(), treino.AtualizarTreino)
+	r.DELETE("/treinos/:id", middleware.AutenticarJWT(), treino.DeletarTreino)
 
-	// Rotas de Exercício
-
-	// Cadastro de exercício
+	// CRUD de Exercício
 	r.POST("/exercicios", middleware.AutenticarJWT(), exercicio.CadastrarExercicio)
+	r.GET("/exercicios", middleware.AutenticarJWT(), exercicio.ListarExercicios)
+	r.GET("/exercicios/:id", middleware.AutenticarJWT(), exercicio.BuscarExercicioPorID)
+	r.PUT("/exercicios/:id", middleware.AutenticarJWT(), exercicio.AtualizarExercicio)
+	r.DELETE("/exercicios/:id", middleware.AutenticarJWT(), exercicio.DeletarExercicio)
 
-	// Cadastro do exercício a um treino
+	// Associação de exercícios ao treino
 	r.POST("/treinos/:id/exercicios", middleware.AutenticarJWT(), treino.AssociarExercicios)
 	r.GET("/treinos/:id/exercicios", middleware.AutenticarJWT(), treino.ListarExerciciosDoTreino)
 
