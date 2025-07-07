@@ -5,6 +5,7 @@ import (
 	"os"
 
 	"github.com/gin-gonic/gin"
+	"github.com/renancmanera/api_academia/internal/handler/middleware"
 	"github.com/renancmanera/api_academia/internal/handler/usuario"
 )
 
@@ -16,6 +17,11 @@ func SetupRouter() *gin.Engine {
 		c.JSON(200, gin.H{
 			"message": "pong",
 		})
+	})
+
+	// Middleware de autenticação JWT
+	r.GET("/protegido", middleware.AutenticarJWT(), func(c *gin.Context) {
+		c.JSON(200, gin.H{"mensagem": "Você acessou uma rota protegida!"})
 	})
 
 	// Rota de cadastro de usuário
