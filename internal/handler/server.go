@@ -5,6 +5,7 @@ import (
 	"os"
 
 	"github.com/gin-gonic/gin"
+
 	"github.com/renancmanera/api_academia/internal/handler/middleware"
 	"github.com/renancmanera/api_academia/internal/handler/treino"
 	"github.com/renancmanera/api_academia/internal/handler/usuario"
@@ -31,6 +32,7 @@ func SetupRouter() *gin.Engine {
 
 	// Rotas de Treino
 	r.POST("/treinos", middleware.AutenticarJWT(), treino.CadastrarTreino)
+	r.GET("/treinos", middleware.AutenticarJWT(), treino.ListarTreinos)
 
 	return r
 }
