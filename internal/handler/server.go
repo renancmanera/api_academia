@@ -36,7 +36,13 @@ func SetupRouter() *gin.Engine {
 	r.GET("/treinos", middleware.AutenticarJWT(), treino.ListarTreinos)
 
 	// Rotas de Exercício
+
+	// Cadastro de exercício
 	r.POST("/exercicios", middleware.AutenticarJWT(), exercicio.CadastrarExercicio)
+
+	// Cadastro do exercício a um treino
+	r.POST("/treinos/:id/exercicios", middleware.AutenticarJWT(), treino.AssociarExercicios)
+	r.GET("/treinos/:id/exercicios", middleware.AutenticarJWT(), treino.ListarExerciciosDoTreino)
 
 	return r
 }
