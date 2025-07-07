@@ -5,6 +5,7 @@ import (
 	"os"
 
 	"github.com/gin-gonic/gin"
+	"github.com/renancmanera/api_academia/internal/handler/usuario"
 )
 
 func SetupRouter() *gin.Engine {
@@ -16,6 +17,9 @@ func SetupRouter() *gin.Engine {
 			"message": "pong",
 		})
 	})
+
+	// Rota de cadastro de usuário
+	r.POST("/cadastro", usuario.CadastrarUsuario)
 
 	return r
 }

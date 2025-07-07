@@ -6,6 +6,7 @@ import (
 	"os"
 
 	"github.com/joho/godotenv"
+	"github.com/renancmanera/api_academia/internal/domain"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
@@ -37,4 +38,10 @@ func InitDB() {
 	}
 	DB = db
 	log.Println("Conexão com o banco de dados estabelecida com sucesso!")
+
+	// Migração automática da tabela usuarios
+	err = db.AutoMigrate(&domain.Usuario{})
+	if err != nil {
+		log.Fatalf("Erro ao migrar tabela Usuario: %v", err)
+	}
 }
