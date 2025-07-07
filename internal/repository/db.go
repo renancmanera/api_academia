@@ -44,4 +44,10 @@ func InitDB() {
 	if err != nil {
 		log.Fatalf("Erro ao migrar tabela Usuario: %v", err)
 	}
+
+	// Migração automática da tabela treinos
+	err = db.AutoMigrate(&domain.Treino{})
+	if err != nil {
+		log.Fatalf("Erro ao migrar Treino: %v", err)
+	}
 }

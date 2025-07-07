@@ -9,7 +9,7 @@ import (
 	"github.com/golang-jwt/jwt/v5"
 )
 
-// Middleware para proteger rotas usando JWT
+// Middleware para proteger rotas usando JWT e disponibilizar o usuario_id
 func AutenticarJWT() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		authHeader := c.GetHeader("Authorization")
@@ -37,6 +37,16 @@ func AutenticarJWT() gin.HandlerFunc {
 			c.JSON(http.StatusUnauthorized, gin.H{"erro": "Token inválido ou expirado"})
 			c.Abort()
 			return
+		}
+
+		// Extração do usuario_id das claims do token
+		if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
+			// O jwt retorna números como float64, por isso a conversão
+			if id, existe := claims["usuario_id"]; existe {
+				if idFloat, ok := id.(float64); ok {
+					c.Set("usuario_id", uint(idFloat))
+				}
+			}
 		}
 
 		c.Next()
