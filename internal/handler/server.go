@@ -20,6 +20,7 @@ func SetupRouter() *gin.Engine {
 
 	// Rota de cadastro de usuário
 	r.POST("/cadastro", usuario.CadastrarUsuario)
+	r.POST("/login", usuario.LoginUsuario)
 
 	return r
 }
