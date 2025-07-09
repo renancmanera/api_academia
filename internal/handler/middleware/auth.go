@@ -48,6 +48,14 @@ func AutenticarJWT() gin.HandlerFunc {
 			}
 		}
 
+		if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
+			if papel, existe := claims["papel"]; existe {
+				if papelStr, ok := papel.(string); ok {
+					c.Set("papel", papelStr)
+				}
+			}
+		}
+
 		c.Next()
 	}
 }

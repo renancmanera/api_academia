@@ -16,6 +16,7 @@ import (
 func SetupRouter() *gin.Engine {
 	r := gin.Default()
 
+	// CORS para permitir acesso do frontend
 	r.Use(cors.New(cors.Config{
 		AllowOrigins: []string{"http://localhost:3000"},
 		AllowMethods: []string{"GET", "POST", "PUT", "DELETE"},
@@ -24,12 +25,10 @@ func SetupRouter() *gin.Engine {
 
 	// Rota de teste
 	r.GET("/ping", func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"message": "pong",
-		})
+		c.JSON(200, gin.H{"message": "pong"})
 	})
 
-	// Middleware de autenticação JWT
+	// Rota protegida de teste
 	r.GET("/protegido", middleware.AutenticarJWT(), func(c *gin.Context) {
 		c.JSON(200, gin.H{"mensagem": "Você acessou uma rota protegida!"})
 	})
@@ -39,28 +38,33 @@ func SetupRouter() *gin.Engine {
 	r.POST("/login", usuario.LoginUsuario)
 
 	// CRUD de Usuário
+	// Visualização (GET) – ambos
 	r.GET("/usuarios", middleware.AutenticarJWT(), usuario.ListarUsuarios)
 	r.GET("/usuarios/:id", middleware.AutenticarJWT(), usuario.BuscarUsuarioPorID)
-	r.PUT("/usuarios/:id", middleware.AutenticarJWT(), usuario.AtualizarUsuario)
-	r.DELETE("/usuarios/:id", middleware.AutenticarJWT(), usuario.DeletarUsuario)
+	// Gerenciamento (POST/PUT/DELETE) - só instrutor
+	r.PUT("/usuarios/:id", middleware.AutenticarJWT(), middleware.PermitirPapeis("instrutor"), usuario.AtualizarUsuario)
+	r.DELETE("/usuarios/:id", middleware.AutenticarJWT(), middleware.PermitirPapeis("instrutor"), usuario.DeletarUsuario)
 
 	// CRUD de Treino
-	r.POST("/treinos", middleware.AutenticarJWT(), treino.CadastrarTreino)
+	// Visualização (GET) – ambos
 	r.GET("/treinos", middleware.AutenticarJWT(), treino.ListarTreinos)
 	r.GET("/treinos/:id", middleware.AutenticarJWT(), treino.BuscarTreinoPorID)
-	r.PUT("/treinos/:id", middleware.AutenticarJWT(), treino.AtualizarTreino)
-	r.DELETE("/treinos/:id", middleware.AutenticarJWT(), treino.DeletarTreino)
+	r.GET("/treinos/:id/exercicios", middleware.AutenticarJWT(), treino.ListarExerciciosDoTreino)
+	// Gerenciamento (POST/PUT/DELETE) – só instrutor
+	r.POST("/treinos", middleware.AutenticarJWT(), middleware.PermitirPapeis("instrutor"), treino.CadastrarTreino)
+	r.PUT("/treinos/:id", middleware.AutenticarJWT(), middleware.PermitirPapeis("instrutor"), treino.AtualizarTreino)
+	r.DELETE("/treinos/:id", middleware.AutenticarJWT(), middleware.PermitirPapeis("instrutor"), treino.DeletarTreino)
+	r.POST("/treinos/:id/exercicios", middleware.AutenticarJWT(), middleware.PermitirPapeis("instrutor"), treino.AssociarExercicios)
+	r.DELETE("/treinos/:id/exercicios/:exercicio_id", middleware.AutenticarJWT(), middleware.PermitirPapeis("instrutor"), treino.RemoverExercicioDoTreino)
 
 	// CRUD de Exercício
-	r.POST("/exercicios", middleware.AutenticarJWT(), exercicio.CadastrarExercicio)
+	// Visualização (GET) – ambos
 	r.GET("/exercicios", middleware.AutenticarJWT(), exercicio.ListarExercicios)
 	r.GET("/exercicios/:id", middleware.AutenticarJWT(), exercicio.BuscarExercicioPorID)
-	r.PUT("/exercicios/:id", middleware.AutenticarJWT(), exercicio.AtualizarExercicio)
-	r.DELETE("/exercicios/:id", middleware.AutenticarJWT(), exercicio.DeletarExercicio)
-
-	// Associação de exercícios ao treino
-	r.POST("/treinos/:id/exercicios", middleware.AutenticarJWT(), treino.AssociarExercicios)
-	r.GET("/treinos/:id/exercicios", middleware.AutenticarJWT(), treino.ListarExerciciosDoTreino)
+	// Gerenciamento (POST/PUT/DELETE) – só instrutor
+	r.POST("/exercicios", middleware.AutenticarJWT(), middleware.PermitirPapeis("instrutor"), exercicio.CadastrarExercicio)
+	r.PUT("/exercicios/:id", middleware.AutenticarJWT(), middleware.PermitirPapeis("instrutor"), exercicio.AtualizarExercicio)
+	r.DELETE("/exercicios/:id", middleware.AutenticarJWT(), middleware.PermitirPapeis("instrutor"), exercicio.DeletarExercicio)
 
 	return r
 }
