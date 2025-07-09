@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 
 	"github.com/renancmanera/api_academia/internal/handler/exercicio"
@@ -14,6 +15,12 @@ import (
 
 func SetupRouter() *gin.Engine {
 	r := gin.Default()
+
+	r.Use(cors.New(cors.Config{
+		AllowOrigins: []string{"http://localhost:3000"},
+		AllowMethods: []string{"GET", "POST", "PUT", "DELETE"},
+		AllowHeaders: []string{"Origin", "Authorization", "Content-Type"},
+	}))
 
 	// Rota de teste
 	r.GET("/ping", func(c *gin.Context) {
