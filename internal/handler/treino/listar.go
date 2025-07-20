@@ -9,17 +9,14 @@ import (
 )
 
 func ListarTreinos(c *gin.Context) {
-	usuarioID, existe := c.Get("usuario_id")
-	if !existe {
-		c.JSON(http.StatusUnauthorized, gin.H{"erro": "Usuário não autenticado"})
-		return
-	}
-
+	papel, _ := c.Get("papel")
+	usuarioID, _ := c.Get("usuario_id")
 	var treinos []domain.Treino
-	if err := repository.DB.Where("usuario_id = ?", usuarioID.(uint)).Find(&treinos).Error; err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"erro": "Erro ao buscar treinos"})
-		return
-	}
 
+	if papel == "instrutor" {
+		repository.DB.Find(&treinos) // Todos os treinos
+	} else {
+		repository.DB.Where("usuario_id = ?", usuarioID).Find(&treinos) // Só do aluno
+	}
 	c.JSON(http.StatusOK, treinos)
 }
