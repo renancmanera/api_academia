@@ -53,5 +53,6 @@ func LoginUsuario(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"mensagem": "Login realizado com sucesso!",
 		"token":    tokenString,
+		"papel":    usuario.Papel,
 	})
 }
